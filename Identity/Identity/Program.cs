@@ -17,7 +17,12 @@ namespace Identity
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
+            
+
             Host.CreateDefaultBuilder(args)
+                .UseDefaultServiceProvider((context, options) => {
+                    options.ValidateScopes = false;
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

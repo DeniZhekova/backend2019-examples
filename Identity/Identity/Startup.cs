@@ -36,6 +36,8 @@ namespace Identity
                 opts.Password.RequireDigit = false;
             }).AddEntityFrameworkStores<AppIdentityDbContext>()
             .AddDefaultTokenProviders();
+            
+            //services.ConfigureApplicationCookie(opts => opts.LoginPath = "/Users/Login");
 
             services.AddControllersWithViews();
         }
@@ -66,6 +68,8 @@ namespace Identity
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            AppIdentityDbContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
         }
     }
 }
