@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Lesson10_EF_demo.Models;
 
 namespace Lesson10_EF_demo
 {
@@ -23,6 +25,9 @@ namespace Lesson10_EF_demo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddDbContext<Lesson10_EF_demoContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("Lesson10_EF_demoContext")));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
