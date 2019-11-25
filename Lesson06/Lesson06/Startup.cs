@@ -28,6 +28,14 @@ namespace Lesson06
             }
 
             app.UseStaticFiles();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                  name: "areas",
+                  template: "{area:exists}/{controller=AdminHome}/{action=Index}/{id?}"
+                );
+            });
+
 
             app.UseMvc(routes =>
             {
