@@ -71,8 +71,7 @@ namespace Identity.Controllers
                     AppUser user = await userManager.FindByIdAsync(userId);
                     if (user != null)
                     {
-                        result = await userManager.AddToRoleAsync(user,
-                        model.RoleName);
+                        result = await userManager.AddToRoleAsync(user, model.RoleName);
                         if (!result.Succeeded)
                         {
                             AddErrorsFromResult(result);
@@ -84,8 +83,7 @@ namespace Identity.Controllers
                     AppUser user = await userManager.FindByIdAsync(userId);
                     if (user != null)
                     {
-                        result = await userManager.RemoveFromRoleAsync(user,
-                        model.RoleName);
+                        result = await userManager.RemoveFromRoleAsync(user, model.RoleName);
                         if (!result.Succeeded)
                         {
                             AddErrorsFromResult(result);

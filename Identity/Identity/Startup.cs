@@ -69,7 +69,7 @@ namespace Identity
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            AppIdentityDbContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
+            //AppIdentityDbContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
         }
     }
 }
