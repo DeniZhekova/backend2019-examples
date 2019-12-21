@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Identity.Models;
+﻿using Identity.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Identity.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
-        private UserManager<AppUser> userManager;
-        private SignInManager<AppUser> signInManager;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
         public AccountController(UserManager<AppUser> userMgr,
         SignInManager<AppUser> signinMgr)
         {
-            userManager = userMgr;
-            signInManager = signinMgr;
+            _userManager = userMgr;
+            _signInManager = signinMgr;
         }
 
         [AllowAnonymous]
@@ -34,12 +31,12 @@ namespace Identity.Controllers
         {
             if (ModelState.IsValid)
             {
-                AppUser user = await userManager.FindByEmailAsync(details.Email);
+                AppUser user = await _userManager.FindByEmailAsync(details.Email);
                 if (user != null)
                 {
-                    await signInManager.SignOutAsync();
+                    await _signInManager.SignOutAsync();
                     Microsoft.AspNetCore.Identity.SignInResult result = 
-                        await signInManager.PasswordSignInAsync(user, details.Password, false, false);
+                        await _signInManager.PasswordSignInAsync(user, details.Password, false, false);
                     if (result.Succeeded)
                     {
                         return Redirect(returnUrl ?? "/");
@@ -53,7 +50,7 @@ namespace Identity.Controllers
         [Authorize]
         public async Task<IActionResult> Logout()
         {
-            await signInManager.SignOutAsync();
+            await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
 

@@ -11,7 +11,11 @@ namespace Identity.Models
     public class AppIdentityDbContext : IdentityDbContext<AppUser>
     {
         public AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options) : base(options) { }
-    
+
+        public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
+
+
         public static async Task CreateAdminAccount(IServiceProvider serviceProvider, IConfiguration configuration)
         {
             UserManager<AppUser> userManager =
@@ -23,6 +27,7 @@ namespace Identity.Models
             string password = configuration["Data:AdminUser:Password"];
             string role = configuration["Data:AdminUser:Role"];
 
+            
             if (await userManager.FindByNameAsync(username) == null)
             {
                 if (await roleManager.FindByNameAsync(role) == null)
@@ -34,13 +39,22 @@ namespace Identity.Models
                     UserName = username,
                     Email = email
                 };
-                IdentityResult result = await userManager
-                .CreateAsync(user, password);
+                IdentityResult result = await userManager.CreateAsync(user, password)
+                    .ConfigureAwait(false);
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(user, role);
                 }
             }
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Blog>()
+                .ToTable("Blog");
+        }
+
     }
 }
